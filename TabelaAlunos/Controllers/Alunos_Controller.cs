@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TabelaAlunos.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class Alunos_Controller : ControllerBase
     {
         private readonly ILogger<Alunos_Controller> _logger;
@@ -17,15 +17,15 @@ namespace TabelaAlunos.Controllers
             _logger = logger;
         }
 
-        [HttpGet("SelectAllAlunos")]
+        [HttpGet("SelectAlunos")]
         public async Task<ActionResult<List<Alunos>>> Get()
         {
             return new OracleConnections().selectAlunos();
         }
-        [HttpPost("AllAlunos")]
+        [HttpPost("AddAlunos")]
         public async Task<ActionResult<Alunos>> Post(Alunos alunos)
         {
-            new OracleConnections().AddStudent(alunos);
+            new OracleConnections().addAlunos(alunos);
             return alunos;
         }
 

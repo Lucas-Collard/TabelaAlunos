@@ -6,7 +6,6 @@ namespace TabelaAlunos.Database
     public interface Database
     {
         void OpenConnection();
-        List<Alunos> SelectStudents();
-        void AddStudent(Alunos newAlunos);
+        List<Alunos> selectAlunos();
     }
 }
