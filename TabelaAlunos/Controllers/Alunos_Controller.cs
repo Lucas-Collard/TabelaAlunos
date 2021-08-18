@@ -29,5 +29,13 @@ namespace TabelaAlunos.Controllers
             return alunos;
         }
 
+        [HttpPost("DelAlunos")]
+        public void Post(int delAlunos)
+        {
+
+            new OracleConnections().delAlunos(delAlunos);
+            
+        }
+        
     }
 }

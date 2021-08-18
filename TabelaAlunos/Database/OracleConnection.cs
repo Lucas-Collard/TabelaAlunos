@@ -23,7 +23,7 @@ namespace TabelaAlunos.Database
 
         public List<Alunos> selectAlunos()
         {
-                        OpenConnection();
+            OpenConnection();
             List<Alunos> listaAlunos = new();
 
             cmd.CommandText = "ALUNOS";
@@ -34,7 +34,7 @@ namespace TabelaAlunos.Database
 
             while (reader.Read())
             {
-                listaAlunos.Add(new Alunos(alu_nm: reader.GetString("ALU_NM"), alu_tel_num: reader.GetString("ALU_NR_TEL"), alu_dt_nascimento: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO"))));
+                listaAlunos.Add(new Alunos(Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO"))));
             }
             reader.Dispose();
             connection.Close();
@@ -46,7 +46,7 @@ namespace TabelaAlunos.Database
 
         public void addAlunos(Alunos newAlunos)
         {
-            var AlunoId = (selectAlunos().Count + 1);
+            var IdAlunos = (selectAlunos().Count + 1);
 
             OpenConnection();
 
@@ -55,17 +55,29 @@ namespace TabelaAlunos.Database
 
             cmd.CommandText = "ADDALUNOS";
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            //cmd.Parameters.Add(new OracleParameter("id_NewStudent", studentId)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("NewALU_NM", newAlunos.Alu_Nm)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("NewALU_TEL_NUM", newAlunos.Alu_Tel_Num)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("NewALU_DT_NASCIMENTO", newAlunos.Alu_Dt_Nascimento)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("NewALU_Id", IdAlunos)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("NewALU_NM", newAlunos.NOME)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("NewALU_TEL_NUM", newAlunos.NUMERO)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("NewALU_DT_NASCIMENTO", newAlunos.ANIVERSARIO)).Direction = ParameterDirection.Input;
             cmd.ExecuteReader();
 
             connection.Dispose();
             connection.Close();
+
         }
+        public void delAlunos(int delete_id)
+        {
 
+            OpenConnection();
 
+            cmd.CommandText = "DELALUNOS";
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.Add(new OracleParameter("del_id", delete_id)).Direction = ParameterDirection.Input;
 
+            cmd.ExecuteNonQuery();
+           
+            connection.Dispose();
+            connection.Close();
+        }
     }
 }
