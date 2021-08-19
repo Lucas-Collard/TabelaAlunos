@@ -8,7 +8,7 @@ namespace TabelaAlunos.Database
         void OpenConnection();
         List<Alunos> selectAlunos();
         void addAlunos(Alunos newAlunos);
-       // void DelAlunos(int delete_id);
+       
 
     }
 }
