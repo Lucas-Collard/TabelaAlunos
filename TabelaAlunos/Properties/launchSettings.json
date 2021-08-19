@@ -11,7 +11,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": false,//Inicialmente era True, mas alterei para nao abrir uma pagina no Browser 
+      "launchBrowser": true,//Inicialmente era True, mas alterei para nao abrir uma pagina no Browser 
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -20,7 +20,7 @@
     "TabelaAlunos": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
-      "launchBrowser": false, //Inicialmente era True, mas alterei para nao abrir uma pagina no Browser
+      "launchBrowser": true, //Inicialmente era True, mas alterei para nao abrir uma pagina no Browser
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
