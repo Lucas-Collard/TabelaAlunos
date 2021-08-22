@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using TabelaAlunos.Model;
 
-namespace TabelaAlunos.Database
+namespace TabelaAlunos.Repository
 {
-    public interface Database
+    public interface RepositoryImplementation
     {
         void OpenConnection();
         List<Alunos> selectAlunos();

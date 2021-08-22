@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TabelaAlunos.Database;
+using TabelaAlunos.Business;
 using TabelaAlunos.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace TabelaAlunos.Controllers
 {
@@ -23,7 +24,7 @@ namespace TabelaAlunos.Controllers
         {
             return new OracleConnections().selectAlunos();
         }
-        
+
         //Adiciona pela web dados no Banco de Dados
         [HttpPost("AddAlunos")]
         public async Task<ActionResult<Alunos>> Post(Alunos alunos)
@@ -34,10 +35,21 @@ namespace TabelaAlunos.Controllers
 
         //Remove pela web dados no Banco de Dados
         [HttpPost("DelAlunos")]
-        public void Post(int delAlunos)
+        public ActionResult<String> Post(int delAlunos)
         {
             new OracleConnections().delAlunos(delAlunos);
-            
+            var resultado = new
+            {
+                Status = 200,
+                Mensagem = "Aluno Deletado"
+            };
+
+            return Content(resultado.ToString(), "application/json");
+
+
         }
+
     }
 }
+
+

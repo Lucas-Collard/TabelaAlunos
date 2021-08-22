@@ -28,7 +28,7 @@ namespace TabelaAlunos
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>{c.SwaggerDoc("v2", new OpenApiInfo { Title = "TabelaAlunos", Version = "v2" });});
+            services.AddSwaggerGen(c =>{c.SwaggerDoc("v1", new OpenApiInfo { Title = "TabelaAlunos", Version = "v1" });});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,7 +38,9 @@ namespace TabelaAlunos
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v2/swagger.json", "TabelaAlunos v2"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TabelaAlunos v1"));
+
+
             }
 
             app.UseHttpsRedirection();

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace TabelaAlunos.Database
+namespace TabelaAlunos.Business
 {
     //Faz a herança do Indice DataBase
-    public class OracleConnections : Database
+    public class OracleConnections : DatabaseBusiness
     {
 
         //Abre uma String de Conexão
@@ -42,7 +42,7 @@ namespace TabelaAlunos.Database
             //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
             while (reader.Read())
             {
-                listaAlunos.Add(new Alunos(Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO"))));
+                listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO"))));
             }
             reader.Dispose();
             connection.Close();//Fecha Conexão
@@ -77,15 +77,17 @@ namespace TabelaAlunos.Database
         //Metodo para Deletar um Aluno do Banco de Dados
         public void delAlunos(int delete_id)
         {
-
+            
             OpenConnection();
             //Conecta com a Procedure de Delete, e faz o decremento de alunos do Banco do Dados
             cmd.CommandText = "DELALUNOS";
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
             cmd.Parameters.Add(new OracleParameter("del_id", delete_id)).Direction = ParameterDirection.Input;
 
+
+
             cmd.ExecuteNonQuery();
-           
+
             connection.Dispose();
             connection.Close();
         }
