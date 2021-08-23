@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace TabelaAlunos.Controllers
 {
+    [ApiVersion("1")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class Alunos_Controller : ControllerBase
     {
         private readonly ILogger<Alunos_Controller> _logger;
