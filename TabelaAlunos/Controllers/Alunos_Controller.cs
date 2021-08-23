@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TabelaAlunos.Business;
 using TabelaAlunos.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using TabelaAlunos.Repository;
+using TabelaAlunos.Business;
 
 namespace TabelaAlunos.Controllers
 {
@@ -14,42 +15,33 @@ namespace TabelaAlunos.Controllers
     public class Alunos_Controller : ControllerBase
     {
         private readonly ILogger<Alunos_Controller> _logger;
-        public Alunos_Controller(ILogger<Alunos_Controller> logger)
+        private IAlu_Business _alu_Business;
+
+        public Alunos_Controller(ILogger<Alunos_Controller> logger, IAlu_Business alu_Business)
         {
             _logger = logger;
+            _alu_Business = alu_Business;
         }
 
         //Apresenta na Web os valores de Get (os dados que estao no banco de dados)
         [HttpGet("SelectAlunos")]
         public async Task<ActionResult<List<Alunos>>> Get()
         {
-            return new OracleConnections().selectAlunos();
+            return _alu_Business.selectAlunos();
         }
 
         //Adiciona pela web dados no Banco de Dados
         [HttpPost("AddAlunos")]
         public async Task<ActionResult<Alunos>> Post(Alunos alunos)
         {
-            new OracleConnections().addAlunos(alunos);
-            return alunos;
+            return _alu_Business.addAlunos(alunos);
         }
 
         //Remove pela web dados no Banco de Dados
         [HttpPost("DelAlunos")]
-        public ActionResult<String> Post(int delAlunos)
+        public void Post(int delAlunos)
         {
-            new OracleConnections().delAlunos(delAlunos);
-<<<<<<< HEAD
-            var resultado = new
-            {
-                Status = 200,
-                Mensagem = "Aluno Deletado"
-            };
-
-            return Content(resultado.ToString(), "application/json");
-
-=======
->>>>>>> Modification
+            _alu_Business.delAlunos(delAlunos);
 
         }
 
