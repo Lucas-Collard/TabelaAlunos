@@ -42,7 +42,7 @@ namespace TabelaAlunos.Database
             //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
             while (reader.Read())
             {
-                listaAlunos.Add(new Alunos(Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO"))));
+                listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO")), data_de_cadastro: DateTime.Parse(reader.GetString("alu_dt_cad"))));
             }
             reader.Dispose();
             connection.Close();//Fecha Conexão
@@ -67,6 +67,7 @@ namespace TabelaAlunos.Database
             cmd.Parameters.Add(new OracleParameter("NewALU_NM", newAlunos.NOME)).Direction = ParameterDirection.Input;
             cmd.Parameters.Add(new OracleParameter("NewALU_TEL_NUM", newAlunos.NUMERO)).Direction = ParameterDirection.Input;
             cmd.Parameters.Add(new OracleParameter("NewALU_DT_NASCIMENTO", newAlunos.ANIVERSARIO)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("NewALU_DT_CAD", newAlunos.DATA_DE_CADASTRO)).Direction = ParameterDirection.Input;
             cmd.ExecuteReader();
 
             connection.Dispose();
@@ -79,13 +80,17 @@ namespace TabelaAlunos.Database
         {
 
             OpenConnection();
+
+            DateTime dataLocal = DateTime.Now;
+            
             //Conecta com a Procedure de Delete, e faz o decremento de alunos do Banco do Dados
-            cmd.CommandText = "DELALUNOS";
+            cmd.CommandText = "BK_EXCLUSION";
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("del_id", delete_id)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("ex_del_id", delete_id)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("ex_dt_exclu", dataLocal)).Direction = ParameterDirection.Input;
 
             cmd.ExecuteNonQuery();
-           
+             
             connection.Dispose();
             connection.Close();
         }
