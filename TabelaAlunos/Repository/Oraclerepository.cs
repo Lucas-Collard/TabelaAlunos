@@ -42,7 +42,11 @@ namespace TabelaAlunos.Repository
             //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
             while (reader.Read())
             {
+<<<<<<< HEAD:TabelaAlunos/Repository/Oraclerepository.cs
                 listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO"))));
+=======
+                listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO")), data_de_cadastro: DateTime.Parse(reader.GetString("alu_dt_cad"))));
+>>>>>>> Modification:TabelaAlunos/Database/OracleConnection.cs
             }
             reader.Dispose();
             connection.Close();//Fecha Conexão
@@ -80,7 +84,11 @@ namespace TabelaAlunos.Repository
         {
             
             OpenConnection();
+
+            DateTime dataLocal = DateTime.Now;
+            
             //Conecta com a Procedure de Delete, e faz o decremento de alunos do Banco do Dados
+<<<<<<< HEAD:TabelaAlunos/Repository/Oraclerepository.cs
             cmd.CommandText = "BKEXCLUSION";
             
             DateTime localDate = DateTime.Now;
@@ -93,6 +101,15 @@ namespace TabelaAlunos.Repository
 
             cmd.ExecuteNonQuery();
 
+=======
+            cmd.CommandText = "BK_EXCLUSION";
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.Add(new OracleParameter("ex_del_id", delete_id)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("ex_dt_exclu", dataLocal)).Direction = ParameterDirection.Input;
+
+            cmd.ExecuteNonQuery();
+             
+>>>>>>> Modification:TabelaAlunos/Database/OracleConnection.cs
             connection.Dispose();
             connection.Close();
         }

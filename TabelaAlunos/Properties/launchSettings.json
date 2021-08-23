@@ -11,7 +11,11 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+<<<<<<< HEAD
       "launchBrowser": false, //Inicialmente era True, mas alterei para nao abrir uma pagina no Browser 
+=======
+      "launchBrowser": true, //Inicialmente era True, mas alterei para nao abrir uma pagina no Browser 
+>>>>>>> Modification
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -8,8 +8,9 @@ using System;
 
 namespace TabelaAlunos.Controllers
 {
+    [ApiVersion("1")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class Alunos_Controller : ControllerBase
     {
         private readonly ILogger<Alunos_Controller> _logger;
@@ -38,6 +39,7 @@ namespace TabelaAlunos.Controllers
         public ActionResult<String> Post(int delAlunos)
         {
             new OracleConnections().delAlunos(delAlunos);
+<<<<<<< HEAD
             var resultado = new
             {
                 Status = 200,
@@ -46,6 +48,8 @@ namespace TabelaAlunos.Controllers
 
             return Content(resultado.ToString(), "application/json");
 
+=======
+>>>>>>> Modification
 
         }
 
