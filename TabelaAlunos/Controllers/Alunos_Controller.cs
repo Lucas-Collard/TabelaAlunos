@@ -24,7 +24,7 @@ namespace TabelaAlunos.Controllers
         {
             return new OracleConnections().selectAlunos();
         }
-        
+
         //Adiciona pela web dados no Banco de Dados
         [HttpPost("AddAlunos")]
         public async Task<ActionResult<Alunos>> Post(Alunos alunos)
@@ -38,7 +38,7 @@ namespace TabelaAlunos.Controllers
         public void Post(int delAlunos)
         {
             new OracleConnections().delAlunos(delAlunos);
-            
+
         }
     }
 }

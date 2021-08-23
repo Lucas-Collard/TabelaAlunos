@@ -5,6 +5,7 @@ namespace TabelaAlunos.Model
 {
     public class Alunos
     {
+
         private string Nome;
         private string Numero;
         private DateTime Aniversario;
