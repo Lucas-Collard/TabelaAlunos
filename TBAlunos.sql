@@ -1,10 +1,10 @@
-create or replace procedure DelAlunos (del_id in tbalunos.alu_id%TYPE ) 
-is
-Begin
-    delete from tbalunos
-WHERE alu_id = del_id;
+create or replace procedure Exclusao(cur_ex out SYS_REFCURSOR)
+
+IS
+BEGIN
+    open cur_ex for
+    SELECT ALU_ID,ALU_NM, ALU_NR_TEL, ALU_DT_NASCIMENTO, alu_dt_cad,DT_EXCLU
+    FROM TBALUNOSBK ORDER BY alu_id;
 
 
-End;
-
-
+END;

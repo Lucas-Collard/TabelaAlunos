@@ -67,6 +67,7 @@ namespace TabelaAlunos.Repository
             cmd.Parameters.Add(new OracleParameter("NewALU_NM", newAlunos.NOME)).Direction = ParameterDirection.Input;
             cmd.Parameters.Add(new OracleParameter("NewALU_TEL_NUM", newAlunos.NUMERO)).Direction = ParameterDirection.Input;
             cmd.Parameters.Add(new OracleParameter("NewALU_DT_NASCIMENTO", newAlunos.ANIVERSARIO)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("NewALU_DT_CAD", newAlunos.DATA_DE_CADASTRO)).Direction = ParameterDirection.Input;
             cmd.ExecuteReader();
 
             connection.Dispose();
@@ -80,9 +81,13 @@ namespace TabelaAlunos.Repository
             
             OpenConnection();
             //Conecta com a Procedure de Delete, e faz o decremento de alunos do Banco do Dados
-            cmd.CommandText = "DELALUNOS";
+            cmd.CommandText = "BKEXCLUSION";
+            
+            DateTime localDate = DateTime.Now;
+
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("del_id", delete_id)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("ex_del_id", delete_id)).Direction = ParameterDirection.Input;
+            cmd.Parameters.Add(new OracleParameter("DT_EXCLU", localDate)).Direction = ParameterDirection.Input;
 
 
 

@@ -43,7 +43,7 @@ namespace TabelaAlunos.Business
             //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
             while (reader.Read())
             {
-                listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO"))));
+                listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DT_NASCIMENTO")), data_de_cadastro: DateTime.Parse(reader.GetString("alu_dt_cad"))));
             }
             reader.Dispose();
             connection.Close();//Fecha Conexão
@@ -58,7 +58,7 @@ namespace TabelaAlunos.Business
         }
 
         //Metodo para Deletar um Aluno do Banco de Dados
-        public delAlunos(int delete_id)
+        public void delAlunos(int delete_id)
         {
         }
     }
