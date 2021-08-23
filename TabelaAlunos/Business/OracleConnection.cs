@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TabelaAlunos.Repository;
 
 namespace TabelaAlunos.Business
 {
@@ -54,42 +55,11 @@ namespace TabelaAlunos.Business
         // Metodo para implementação de alunos no Banco de Dados
         public void addAlunos(Alunos newAlunos)
         {
-
-            //Faz o incremento de Id, para que sempre pegue o ultimo numero e some 1
-            var IdAlunos = (selectAlunos().Count + 1);
-
-            OpenConnection();
-
-            //Faz conexão com a procedure de AddAlunos, e faz a implementação dos dados no Bando de Dados
-            cmd.CommandText = "ADDALUNOS";
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("NewALU_Id", IdAlunos)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("NewALU_NM", newAlunos.NOME)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("NewALU_TEL_NUM", newAlunos.NUMERO)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("NewALU_DT_NASCIMENTO", newAlunos.ANIVERSARIO)).Direction = ParameterDirection.Input;
-            cmd.ExecuteReader();
-
-            connection.Dispose();
-            connection.Close();
-
         }
 
         //Metodo para Deletar um Aluno do Banco de Dados
-        public void delAlunos(int delete_id)
+        public delAlunos(int delete_id)
         {
-            
-            OpenConnection();
-            //Conecta com a Procedure de Delete, e faz o decremento de alunos do Banco do Dados
-            cmd.CommandText = "DELALUNOS";
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("del_id", delete_id)).Direction = ParameterDirection.Input;
-
-
-
-            cmd.ExecuteNonQuery();
-
-            connection.Dispose();
-            connection.Close();
         }
     }
 }
