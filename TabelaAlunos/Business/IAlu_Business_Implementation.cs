@@ -31,5 +31,10 @@ namespace TabelaAlunos.Business
         {
             return _AluRepository.selectAlunos();
         }
+
+        public List<Alunos_Excluidos> selectAlunosEx()
+        {
+            return _AluRepository.selectAlunosEx();
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace TabelaAlunos.Business
 
         public void delAlunos(int delete_id);
 
+        public List<Alunos_Excluidos> selectAlunosEx();
 
     }
 

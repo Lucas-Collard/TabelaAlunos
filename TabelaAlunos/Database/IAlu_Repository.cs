@@ -10,5 +10,6 @@ namespace TabelaAlunos.Repository
         List<Alunos> selectAlunos();
         ActionResult<Alunos> addAlunos(Alunos newAlunos);
         void delAlunos(int delete_id);
+        List<Alunos_Excluidos> selectAlunosEx();
     }
 }

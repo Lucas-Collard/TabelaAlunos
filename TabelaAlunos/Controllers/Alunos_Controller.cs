@@ -45,6 +45,11 @@ namespace TabelaAlunos.Controllers
 
         }
 
+        [HttpGet("SelectAlunos_Excluidos")]
+        public async Task<ActionResult<List<Alunos_Excluidos>>> GetResult()
+        {
+            return _alu_Business.selectAlunosEx();
+        } 
     }
 }
 
