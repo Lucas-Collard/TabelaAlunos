@@ -197,30 +197,5 @@ namespace TabelaAlunos.Repository
             }
             
         }
-
-        public List<user> selectUsers()
-        {
-            OpenConnection();
-            List<user> listaUsers = new();
-
-            cmd.CommandText = "tbUSER";
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("cur_user", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
-
-            OracleDataReader reader = cmd.ExecuteReader();
-
-            //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
-            while (reader.Read())
-            {
-
-                listaUsers.Add(new user(User_id: reader.GetInt32("USER_ID"), UserName: reader.GetString("USER_NAME"), User_FullName: reader.GetString("USER_FULLNAME"), PassWord:reader.GetString("USER_PASSWORD"),Token:reader.GetString("USER_TOKEN"), TokenTime: DateTime.Parse(reader.GetString("USER_TOKEN_TIME"))));
-
-            }
-            reader.Dispose();
-            connection.Close();
-
-
-            return listaUsers;
-        }
     }
 }
