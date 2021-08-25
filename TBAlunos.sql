@@ -1,10 +1,16 @@
-create or replace procedure Exclusao(cur_ex out SYS_REFCURSOR)
-
+create or replace PROCEDURE prUSER_SEL( cur_user out SYS_REFCURSOR)
 IS
 BEGIN
-    open cur_ex for
-    SELECT ALU_ID,ALU_NM, ALU_NR_TEL, ALU_DT_NASCIMENTO, alu_dt_cad,DT_EXCLU
-    FROM TBALUNOSBK ORDER BY alu_id;
 
-
+  open cur_user for
+  SELECT    USER_ID,
+            USER_NAME, 
+            USER_PASSWORD, 
+            USER_FULLNAME, 
+            USER_TOKEN,
+            USER_TOKEN_TIME
+            
+  FROM TBUSER
+  
+  ORDER BY USER_ID;
 END;

@@ -3,8 +3,6 @@ using Microsoft.Extensions.Logging;
 using TabelaAlunos.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
-using TabelaAlunos.Repository;
 using TabelaAlunos.Business;
 
 namespace TabelaAlunos.Controllers
@@ -25,6 +23,11 @@ namespace TabelaAlunos.Controllers
 
         //Apresenta na Web os valores de Get (os dados que estao no banco de dados)
         [HttpGet("SelectAlunos")]
+        [ProducesResponseType((200), Type = typeof(List<Alunos>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
         public async Task<ActionResult<List<Alunos>>> Get()
         {
             return _alu_Business.selectAlunos();
@@ -32,6 +35,10 @@ namespace TabelaAlunos.Controllers
 
         //Adiciona pela web dados no Banco de Dados
         [HttpPost("AddAlunos")]
+        [ProducesResponseType((200), Type = typeof(Alunos))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public async Task<ActionResult<Alunos>> Post(Alunos alunos)
         {
             return _alu_Business.addAlunos(alunos);
@@ -39,6 +46,9 @@ namespace TabelaAlunos.Controllers
 
         //Remove pela web dados no Banco de Dados
         [HttpPost("DelAlunos")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public void Post(int delAlunos)
         {
             _alu_Business.delAlunos(delAlunos);
@@ -46,10 +56,14 @@ namespace TabelaAlunos.Controllers
         }
 
         [HttpGet("SelectAlunos_Excluidos")]
+        [ProducesResponseType((200), Type = typeof(List<Alunos_Excluidos>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public async Task<ActionResult<List<Alunos_Excluidos>>> GetResult()
         {
             return _alu_Business.selectAlunosEx();
-        } 
+        }
     }
 }
 

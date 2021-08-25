@@ -31,87 +31,181 @@ namespace TabelaAlunos.Repository
         //Cria uma Lista que pega todos os dados do banco, e implementa nela
         public List<Alunos> selectAlunos()
         {
-            OpenConnection();
-            List<Alunos> listaAlunos = new();
-            //Faz a conexão com a Procedure (conectando com o Cursor da Procedure)
-            cmd.CommandText = "prALU_SEL";
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("cur", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
-
-            OracleDataReader reader = cmd.ExecuteReader();
-
-            //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
-            while (reader.Read())
+            try
             {
 
-                listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DH_NASCIMENTO")), data_de_cadastro: DateTime.Parse(reader.GetString("ALU_DH_CADASTRO"))));
+                OpenConnection();
+                List<Alunos> listaAlunos = new();
+                //Faz a conexão com a Procedure (conectando com o Cursor da Procedure)
+                cmd.CommandText = "prALU_SEL";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("cur", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
 
+                OracleDataReader reader = cmd.ExecuteReader();
+
+                //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
+                while (reader.Read())
+                {
+
+                    listaAlunos.Add(new Alunos(id: reader.GetInt32("ALU_ID"), Nome: reader.GetString("ALU_NM"), Numero: reader.GetString("ALU_NR_TEL"), Aniversario: DateTime.Parse(reader.GetString("ALU_DH_NASCIMENTO")), data_de_cadastro: DateTime.Parse(reader.GetString("ALU_DH_CADASTRO"))));
+
+                }
+                reader.Dispose();
+                connection.Close();//Fecha Conexão
+
+                return listaAlunos;//Retorna a lista
             }
-            reader.Dispose();
-            connection.Close();//Fecha Conexão
+            catch (Exception ex)
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+                connection.Dispose();
 
-            return listaAlunos;//Retorna a lista
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
 
         // Metodo para implementação de alunos no Banco de Dados
         public ActionResult<Alunos> addAlunos(Alunos newAlunos)
         {
+            try
+            {
+                //Faz o incremento de Id, para que sempre pegue o ultimo numero e some 1
+                var IdAlunos = (selectAlunos().Count + 1);
 
-            //Faz o incremento de Id, para que sempre pegue o ultimo numero e some 1
-            var IdAlunos = (selectAlunos().Count + 1);
+                OpenConnection();
 
-            OpenConnection();
+                //Faz conexão com a procedure de AddAlunos, e faz a implementação dos dados no Bando de Dados
+                cmd.CommandText = "prALU_INS";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("ALUNew_Id", IdAlunos)).Direction = ParameterDirection.Input;
+                cmd.Parameters.Add(new OracleParameter("ALUNew_NM", newAlunos.NOME)).Direction = ParameterDirection.Input;
+                cmd.Parameters.Add(new OracleParameter("ALUNew_TEL_NUM", newAlunos.NUMERO)).Direction = ParameterDirection.Input;
+                cmd.Parameters.Add(new OracleParameter("ALUNew_DH_NASCIMENTO", newAlunos.ANIVERSARIO)).Direction = ParameterDirection.Input;
+                cmd.Parameters.Add(new OracleParameter("ALUNew_DH_CADASTRO", newAlunos.DATA_DE_CADASTRO)).Direction = ParameterDirection.Input;
+                cmd.ExecuteReader();
 
-            //Faz conexão com a procedure de AddAlunos, e faz a implementação dos dados no Bando de Dados
-            cmd.CommandText = "prALU_INS";
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("ALUNew_Id", IdAlunos)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("ALUNew_NM", newAlunos.NOME)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("ALUNew_TEL_NUM", newAlunos.NUMERO)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("ALUNew_DH_NASCIMENTO", newAlunos.ANIVERSARIO)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("ALUNew_DH_CADASTRO", newAlunos.DATA_DE_CADASTRO)).Direction = ParameterDirection.Input;
-            cmd.ExecuteReader();
+                connection.Dispose();
+                connection.Close();
 
-            connection.Dispose();
-            connection.Close();
+                return newAlunos;
+            }
+            catch (Exception ex)
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+                connection.Dispose();
 
-            return newAlunos;
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
 
         }
 
         //Metodo para Deletar um Aluno do Banco de Dados
         public void delAlunos(int delete_id)
         {
-            
-            OpenConnection();
-            DateTime localDate = DateTime.Now;
+            try
+            {
+                OpenConnection();
+                DateTime localDate = DateTime.Now;
 
-            //Conecta com a Procedure de Delete, e faz o decremento de alunos do Banco do Dados
+                //Conecta com a Procedure de Delete, e faz o decremento de alunos do Banco do Dados
 
-            cmd.CommandText = "prALUBK_DEL";
-           
-
-
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("ALUEX_ID_DEL", delete_id)).Direction = ParameterDirection.Input;
-            cmd.Parameters.Add(new OracleParameter("ALUBK_DH_EXCLU", localDate)).Direction = ParameterDirection.Input;
+                cmd.CommandText = "prALUBK_DEL";
 
 
-            cmd.ExecuteNonQuery();
 
-            connection.Dispose();
-            connection.Close();
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("ALUEX_ID_DEL", delete_id)).Direction = ParameterDirection.Input;
+                cmd.Parameters.Add(new OracleParameter("ALUBK_DH_EXCLU", localDate)).Direction = ParameterDirection.Input;
+
+
+                cmd.ExecuteNonQuery();
+
+                connection.Dispose();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+                connection.Dispose();
+
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
         }
 
         public List<Alunos_Excluidos> selectAlunosEx()
         {
+            try
+            {
+                OpenConnection();
+                List<Alunos_Excluidos> listaAlunosEx = new();
+                //Faz a conexão com a Procedure (conectando com o Cursor da Procedure)
+                cmd.CommandText = "prALUEX_SEL";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new OracleParameter("cur_ex", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
+
+                OracleDataReader reader = cmd.ExecuteReader();
+
+                //Laço de Repetição para implementar os dados do Banco de Dados na lista de Alunos (Lista que foi criada na linha 34)
+                while (reader.Read())
+                {
+
+                    listaAlunosEx.Add(new Alunos_Excluidos(id_ex: reader.GetInt32("ALUBK_ID"), Nome_ex: reader.GetString("ALUBK_NM"), Numero_ex: reader.GetString("ALUBK_NR_TEL"), Aniversario_ex: DateTime.Parse(reader.GetString("ALUBK_DH_NASCIMENTO")), data_de_cadastro_ex: DateTime.Parse(reader.GetString("ALUBK_DH_CADASTRO"))));
+
+                }
+                reader.Dispose();
+                connection.Close();//Fecha Conexão
+
+                return listaAlunosEx;//Retorna a lista
+            }
+            catch (Exception ex)
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+                connection.Dispose();
+
+                throw ex ;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            
+        }
+
+        public List<user> selectUsers()
+        {
             OpenConnection();
-            List<Alunos_Excluidos> listaAlunosEx = new();
-            //Faz a conexão com a Procedure (conectando com o Cursor da Procedure)
-            cmd.CommandText = "prALUEX_SEL";
+            List<user> listaUsers = new();
+
+            cmd.CommandText = "tbUSER";
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new OracleParameter("cur_ex", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(new OracleParameter("cur_user", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
 
             OracleDataReader reader = cmd.ExecuteReader();
 
@@ -119,13 +213,14 @@ namespace TabelaAlunos.Repository
             while (reader.Read())
             {
 
-                listaAlunosEx.Add(new Alunos_Excluidos(id_ex: reader.GetInt32("ALUBK_ID"), Nome_ex: reader.GetString("ALUBK_NM"), Numero_ex: reader.GetString("ALUBK_NR_TEL"), Aniversario_ex: DateTime.Parse(reader.GetString("ALUBK_DH_NASCIMENTO")), data_de_cadastro_ex: DateTime.Parse(reader.GetString("ALUBK_DH_CADASTRO"))));
+                listaUsers.Add(new user(User_id: reader.GetInt32("USER_ID"), UserName: reader.GetString("USER_NAME"), User_FullName: reader.GetString("USER_FULLNAME"), PassWord:reader.GetString("USER_PASSWORD"),Token:reader.GetString("USER_TOKEN"), TokenTime: DateTime.Parse(reader.GetString("USER_TOKEN_TIME"))));
 
             }
             reader.Dispose();
-            connection.Close();//Fecha Conexão
+            connection.Close();
 
-            return listaAlunosEx;//Retorna a lista
+
+            return listaUsers;
         }
     }
 }

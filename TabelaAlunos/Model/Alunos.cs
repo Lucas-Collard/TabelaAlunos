@@ -13,9 +13,6 @@ namespace TabelaAlunos.Model
 
         public Alunos(int id, string Nome, string Numero, DateTime Aniversario, DateTime data_de_cadastro)
         {
-
- 
-
             this.Id = id;
             this.Nome = Nome;
             this.Numero = Numero;
