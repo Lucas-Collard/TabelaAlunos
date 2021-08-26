@@ -3,7 +3,6 @@ using TabelaAlunos.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TabelaAlunos.Repository
@@ -31,6 +30,7 @@ namespace TabelaAlunos.Repository
         //Cria uma Lista que pega todos os dados do banco, e implementa nela
         public List<Alunos> selectAlunos()
         {
+
             try
             {
 
@@ -69,7 +69,10 @@ namespace TabelaAlunos.Repository
             {
                 connection.Close();
             }
+
         }
+
+
 
 
         // Metodo para implementação de alunos no Banco de Dados
@@ -189,13 +192,13 @@ namespace TabelaAlunos.Repository
                 }
                 connection.Dispose();
 
-                throw ex ;
+                throw ex;
             }
             finally
             {
                 connection.Close();
             }
-            
+
         }
     }
 }

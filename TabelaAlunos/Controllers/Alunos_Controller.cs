@@ -4,6 +4,7 @@ using TabelaAlunos.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TabelaAlunos.Business;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TabelaAlunos.Controllers
 {
@@ -21,12 +22,15 @@ namespace TabelaAlunos.Controllers
             _alu_Business = alu_Business;
         }
 
+
         //Apresenta na Web os valores de Get (os dados que estao no banco de dados)
         [HttpGet("SelectAlunos")]
+        [Authorize(Roles = "professor,diretor,aluno")]
         [ProducesResponseType((200), Type = typeof(List<Alunos>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+
 
         public async Task<ActionResult<List<Alunos>>> Get()
         {
@@ -35,6 +39,7 @@ namespace TabelaAlunos.Controllers
 
         //Adiciona pela web dados no Banco de Dados
         [HttpPost("AddAlunos")]
+        [Authorize(Roles = "professor,diretor")]
         [ProducesResponseType((200), Type = typeof(Alunos))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -46,6 +51,7 @@ namespace TabelaAlunos.Controllers
 
         //Remove pela web dados no Banco de Dados
         [HttpPost("DelAlunos")]
+        [Authorize(Roles = "diretor")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -56,6 +62,7 @@ namespace TabelaAlunos.Controllers
         }
 
         [HttpGet("SelectAlunos_Excluidos")]
+        [Authorize(Roles = "diretor")]
         [ProducesResponseType((200), Type = typeof(List<Alunos_Excluidos>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
